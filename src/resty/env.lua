@@ -11,6 +11,22 @@ local _M = {
 }
 
 local getenv = os.getenv
+local ffi = require('ffi')
+ffi.cdef([=[
+int setenv(const char*, const char*, int);
+]=])
+
+local C = ffi.C
+
+local function setenv(name, value, overwrite)
+  local overwrite_flag = overwrite and 1 or 0
+
+  if C.setenv(name, value, overwrite_flag) == -1 then
+    return nil, C.strerror(ffi.errno())
+  else
+    return value
+  end
+end
 
 local cached = {}
 
@@ -77,7 +93,14 @@ end
 function _M.set(name, value)
   local env = _M.env
   local previous = env[name]
-  env[name] = value
+
+  local ok, err = setenv(name, value, true)
+
+  if ok then
+    env[name] = value
+    cached[name] = nil
+  end
+
   return previous
 end
 

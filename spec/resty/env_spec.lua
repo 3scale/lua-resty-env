@@ -44,6 +44,13 @@ describe('env', function()
 
       assert.equal('val', _M.env.SOME_MISSING_KEY)
     end)
+
+    it('calls setenv', function()
+      local key = 'SOME_UNUSED_KEY'
+      assert.falsy(os.getenv(key))
+      _M.set(key, 'value')
+      assert.equal('value', os.getenv(key))
+    end)
   end)
 
   describe('.reset', function()
