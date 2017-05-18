@@ -7,7 +7,7 @@
 -- @license Apache License Version 2.0
 
 local _M = {
-  _VERSION = '0.1'
+  _VERSION = '0.2'
 }
 
 local getenv = os.getenv
