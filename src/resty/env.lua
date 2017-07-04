@@ -7,7 +7,7 @@
 -- @license Apache License Version 2.0
 
 local _M = {
-  _VERSION = '0.2'
+  _VERSION = '0.3.0'
 }
 
 local tostring = tostring
