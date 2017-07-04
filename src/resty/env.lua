@@ -10,16 +10,34 @@ local _M = {
   _VERSION = '0.2'
 }
 
+local tostring = tostring
 local getenv = os.getenv
 local ffi = require('ffi')
 ffi.cdef([=[
 int setenv(const char*, const char*, int);
+int unsetenv(const char*);
 ]=])
 
 local C = ffi.C
 
+local function ffi_error()
+  return C.strerror(ffi.errno())
+end
+
+local function unsetenv(name)
+  if C.unsetenv(name) == -1 then
+    return nil, ffi_error()
+  else
+    return true
+  end
+end
+
 local function setenv(name, value, overwrite)
   local overwrite_flag = overwrite and 1 or 0
+
+  if not value then
+    return nil, 'missing value'
+  end
 
   if C.setenv(name, value, overwrite_flag) == -1 then
     return nil, C.strerror(ffi.errno())
@@ -92,16 +110,24 @@ end
 -- @see resty.env.get
 function _M.set(name, value)
   local env = _M.env
+
+  local val = value and tostring(value)
+  local ok, err
+
+  if val then
+    ok, err = setenv(name, val, true)
+  else
+    ok, err = unsetenv(name)
+  end
+
   local previous = env[name]
 
-  local ok, err = setenv(name, value, true)
-
   if ok then
-    env[name] = value
+    env[name] = val
     cached[name] = nil
   end
 
-  return previous
+  return previous, err
 end
 
 --- Reset local cache.

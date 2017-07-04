@@ -51,6 +51,20 @@ describe('env', function()
       _M.set(key, 'value')
       assert.equal('value', os.getenv(key))
     end)
+
+    it('converts the value to string', function()
+      _M.set('NUMERIC_VALUE', 1234)
+
+      assert.equal('1234', _M.env.NUMERIC_VALUE)
+    end)
+
+    it('works with nil', function()
+      assert.truthy(_M.get('_'))
+
+      _M.set('_', nil)
+
+      assert.equal(nil, os.getenv('_'))
+    end)
   end)
 
   describe('.reset', function()
