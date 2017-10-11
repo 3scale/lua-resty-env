@@ -11,11 +11,16 @@ local _M = {
 }
 
 local tostring = tostring
+local sub = string.sub
+local find = string.find
+local pairs = pairs
 local getenv = os.getenv
+
 local ffi = require('ffi')
 ffi.cdef([=[
 int setenv(const char*, const char*, int);
 int unsetenv(const char*);
+extern char **environ;
 ]=])
 
 local C = ffi.C
@@ -46,6 +51,28 @@ local function setenv(name, value, overwrite)
   end
 end
 
+local function environ() -- return whole environment as table
+  local env = C.environ
+  if not env then return nil end
+  local ret = {}
+  local i = 0
+
+  while env[i] ~= nil do
+    local e = ffi.string(env[i])
+    local eq = find(e, '=')
+    if eq then
+      ret[sub(e, 1, eq - 1)] = sub(e, eq + 1)
+    end
+    i = i + 1
+  end
+
+  for name, value in pairs(_M.env) do
+    ret[name] = value
+  end
+
+  return ret
+end
+
 local cached = {}
 
 local function fetch(name)
@@ -63,6 +90,11 @@ local function fetch(name)
   end
 
   return value
+end
+
+--- Return a table with all environment variables.
+function _M.list()
+  return environ()
 end
 
 --- Return the raw value from ENV. Uses local cache.

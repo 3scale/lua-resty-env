@@ -82,6 +82,14 @@ Sets the the `value` to the cache and returns the previous value in the cache.
 
 [Back to TOC](#table-of-contents)
 
+list
+-------
+`syntax: table = env.list()`
+
+Returns a table with all environment variables. Names are keys and values are values.
+
+[Back to TOC](#table-of-contents)
+
 enabled
 ----------
 `syntax: ok = env.enabled(name)`

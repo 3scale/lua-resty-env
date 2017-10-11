@@ -5,6 +5,16 @@ describe('env', function()
   before_each(function() env = _M.env end)
   after_each(function() _M.env = env end)
 
+  describe('.list', function()
+    it('returns contents of the ENV variable', function()
+      local list = _M.list()
+
+      assert.truthy(list.PATH)
+      assert.truthy(list.HOME)
+      assert.truthy(list.PWD)
+    end)
+  end)
+
   describe('.get', function()
 
     local path = os.getenv("PATH")
