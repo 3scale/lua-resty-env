@@ -1,9 +1,9 @@
 package = "lua-resty-env"
-version = "0.3.0-1"
+version = "0.4.0-1"
 source = {
-   url = "https://github.com/3scale/lua-resty-env/archive/v0.3.0.tar.gz",
-   md5 = "00c05a22173d0b06927118b85c98e029",
-   dir = "lua-resty-env-0.3.0",
+   url = "https://github.com/3scale/lua-resty-env/archive/v0.4.0.tar.gz",
+   md5 = "1841e33b9f7c31707fe78a879eff9ca7",
+   dir = "lua-resty-env-0.4.0",
 }
 description = {
    summary = "lua-resty-env - Lua cache for calls to `os.getenv`.",
