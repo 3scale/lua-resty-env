@@ -15,6 +15,7 @@ Table of Contents
     * [get](#get)
     * [set](#set)
     * [value](#value)
+    * [list](#list)
     * [enabled](#enabled)
     * [reset](#reset)
 * [Installation](#installation)
@@ -79,6 +80,14 @@ set
 `syntax: prev = env.set(name, value)`
 
 Sets the the `value` to the cache and returns the previous value in the cache.
+
+[Back to TOC](#table-of-contents)
+
+value
+-------
+`syntax: val = env.value(name)`
+
+Same as `get`, but returns nil for envs whose value is an empty string.
 
 [Back to TOC](#table-of-contents)
 
